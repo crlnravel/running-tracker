@@ -1,7 +1,5 @@
-from django.shortcuts import render, redirect   # Tambahkan import redirect di baris ini
-from django.contrib import messages
-from django.http import HttpResponse, HttpResponseRedirect
-from django.urls import reverse
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from django.core import serializers
 from main.forms import ItemForm
 from main.models import Item
@@ -11,7 +9,7 @@ def show_main(request):
     items = Item.objects.all()
 
     context = {
-        'name': 'Pak Bepe',
+        'name': 'Carleano Ravelza Wongso',
         'class': 'PBP A',
         'items': items
     }
