@@ -13,12 +13,13 @@ from main.models import Item
 # Create your views here.
 @login_required(login_url='/login')
 def show_main(request):
-    items = Item.objects.all()
+    items = Item.objects.filter(user=request.user)
 
     context = {
-        'name': 'Carleano Ravelza Wongso',
+        'name': request.user.username,
         'class': 'PBP A',
-        'items': items
+        'items': items,
+        'last_login': request.COOKIES['last_login']
     }
 
     return render(request, 'main.html', context)
@@ -28,11 +29,37 @@ def create_item(request):
     form = ItemForm(request.POST or None)
 
     if form.is_valid() and request.method == "POST":
-        form.save()
+        profile = form.save(commit=False)
+        profile.user = request.user
+        profile.save()
+    
         return redirect('main:show_main')
 
     context = {'form': form}
     return render(request, "create_item.html", context)
+
+def edit_item(request, id):
+    # Get item berdasarkan ID
+    item = Item.objects.get(pk = id)
+
+    # Set item sebagai instance dari form
+    form = ItemForm(request.POST or None, instance=item)
+
+    if form.is_valid() and request.method == "POST":
+        # Simpan form dan kembali ke halaman awal
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {'form': form}
+    return render(request, "edit_item.html", context)
+
+def delete_item(request, id):
+    # Get data berdasarkan ID
+    item = Item.objects.get(pk = id)
+    # Hapus data
+    item.delete()
+    # Kembali ke halaman awal
+    return HttpResponseRedirect(reverse('main:show_main'))
 
 
 def show_xml(request):

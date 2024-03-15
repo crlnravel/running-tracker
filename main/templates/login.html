@@ -5,51 +5,59 @@
 {% endblock meta %} 
 
 {% block content %}
-<div class="login">
-  <h1>Login</h1>
+<div class="w-full h-[100vh]  flex justify-end   login bg-gradient-to-tl from-[#DC84F3] to-[#F7418F] ">
+  <div class="px-20 py-[30vh] max-w-[65%] h-full flex flex-col gap-5 text-white">
+    <h1 class="text-4xl font-bold font-sans">
+      Welcome to Running Tracker!
+    </h1>
+    <p>
+      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatum non eius laborum, optio officiis, blanditiis velit iste nostrum maiores odit quia dolor autem eum quibusdam! A debitis vel tempore error voluptas quam! Expedita soluta accusamus deserunt eveniet itaque omnis consequuntur.
+    </p>
+  </div>
 
-  <form method="POST" action="">
-    {% csrf_token %}
-    <table>
-      <tr>
-        <td>Username:</td>
-        <td>
-          <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            class="form-control"
-          />
-        </td>
-      </tr>
+  <div class="block w-[80%] lg:w-[35%] h-full p-6 bg-white border border-gray-200 flex flex-col justify-center gap-8">
+    <h3 class="text-center text-2xl font-semibold font-sans">
+      USER LOGIN
+    </h3>
+    <form method="POST" class="w-[65%] max-w-xl mx-auto flex flex-col gap-[2px]">
+      {% csrf_token %}
+      {% if messages %}
+        {% for message in messages %}
+        <div class="flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
+          <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+          </svg>
+          <span class="sr-only">Info</span>
+          <div>
+            <span class="font-medium">{{ message }}</span>
+          </div>
+        </div>
+        {% endfor %}
+      {% endif %} 
+      <div class="mb-5 relative">
+        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+          <svg class="w-6 h-6 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 26 26">
+            <path stroke="currentColor" stroke-width="2" d="M7 17v1c0 .6.4 1 1 1h8c.6 0 1-.4 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+          </svg>
+        </div>
+        <input type="text" id="username" name="username" class="bg-gray-50 border text-gray-900 text-sm rounded-full focus:ring-pink-300 focus:border-pink-300 block block w-full ps-12 p-2.5" placeholder="username" required />
+      </div>
+      <div class="mb-5 relative">
+        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+          <svg class="w-6 h-6 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14v3m-3-6V7a3 3 0 1 1 6 0v4m-8 0h10c.6 0 1 .4 1 1v7c0 .6-.4 1-1 1H7a1 1 0 0 1-1-1v-7c0-.6.4-1 1-1Z"/>
+          </svg>
+        </div>
+        <input type="password" id="password" name="password" class="bg-gray-50 border text-gray-900 text-sm rounded-full focus:ring-pink-300 focus:border-blue-300 block block w-full ps-12 p-2.5" placeholder="password" required />
+      </div>
+      <button type="submit" class="text-white bg-[#FC819E] hover:bg-[#F7418F] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm w-full sm:w-auto px-5 py-2.5 mt-3 text-center">Login</button>
+    </form>
+    <span class="text-center text-sm">
+      New to Running Tracker?
+      <a href="{% url 'main:register' %}" class="bold text-pink-800 hover:text-pink-900"> Register</a>
+    </span>
+  </div>
 
-      <tr>
-        <td>Password:</td>
-        <td>
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            class="form-control"
-          />
-        </td>
-      </tr>
-
-      <tr>
-        <td></td>
-        <td><input class="btn login_btn" type="submit" value="Login" /></td>
-      </tr>
-    </table>
-  </form>
-
-  {% if messages %}
-  <ul>
-    {% for message in messages %}
-    <li>{{ message }}</li>
-    {% endfor %}
-  </ul>
-  {% endif %} Don't have an account yet?
-  <a href="{% url 'main:register' %}">Register Now</a>
 </div>
 
 {% endblock content %}
