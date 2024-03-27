@@ -4,7 +4,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 from django.core import serializers
 from main.forms import ItemForm
@@ -61,14 +62,29 @@ def delete_item(request, id):
     # Kembali ke halaman awal
     return HttpResponseRedirect(reverse('main:show_main'))
 
+@csrf_exempt
+def add_item_ajax(request):
+    if request.method == 'POST':
+        name = request.POST.get("name")
+        distance = request.POST.get("distance")
+        description = request.POST.get("description")
+        user = request.user
+
+        new_item = Item(name=name, distance=distance, description=description, user=user)
+        new_item.save()
+
+        return HttpResponse(b"CREATED", status=201)
+
+    return HttpResponseNotFound()
+
 
 def show_xml(request):
-    data = Item.objects.all()
+    data = Item.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
 
 
 def show_json(request):
-    data = Item.objects.all()
+    data = Item.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 
